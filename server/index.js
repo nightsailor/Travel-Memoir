@@ -9,10 +9,18 @@ const postRoute = require("./routes/posts");
 const categoryRoute = require("./routes/categories");
 const multer = require("multer");
 const path = require("path");
+dotenv.config();
+const simpleGit = require('simple-git');
+const git = simpleGit();
+
+const USER = 'nightsailor';
+const PASS = process.env.PASS;
+const REPO = 'github.com/nightsailor/Apprature';
+
+const remote = `https://${USER}:${PASS}@${REPO}`;
 
 const PORT = process.env.PORT || 8080; // Step 1
 
-dotenv.config();
 app.use(express.json());
 app.use("/images", express.static(path.join(__dirname, "/images")));
 
@@ -39,6 +47,11 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 app.post("/api/upload", upload.single("file"), (req, res) => {
   console.log("came here")
+  git
+    .add('./images')
+    .commit("auto push!")
+    .push([remote, '--all'], () => console.log('done'))
+    .catch((err)=> console.error('failed: ', err))
   res.status(200).json("File has been uploaded");
 });
 
