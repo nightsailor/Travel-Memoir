@@ -1,0 +1,9 @@
+{
+  "name": "my-project",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "heroku-postbuild": "cd server && npm run heroku-postbuild && npm install",
+    "start": "cd server && npm run start"
+  }
+}
