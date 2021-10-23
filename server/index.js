@@ -4,104 +4,38 @@ const dotenv = require("dotenv");
 dotenv.config();
 const mongoose = require("mongoose");
 const morgan = require('morgan');
+const multer = require("multer");
+const path = require("path");
+const db = require('./db');
+const upload = require("./db/storage");
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/users");
 const postRoute = require("./routes/posts");
 const categoryRoute = require("./routes/categories");
-const multer = require("multer");
-const path = require("path");
-const simpleGit = require('simple-git');
-const git = simpleGit(__dirname/ + './../' );
+const { initialiseRepo, gitInitial, gitCommit } = require("./simple git/");
 
-const USER = 'nightsailor';
-const PASS = process.env.PASS;
-const REPO = 'github.com/nightsailor/Apprature';
-
-const remote = `https://${USER}:${PASS}@${REPO}`;
-
-const gitInitial = (git) => {
-  git
-    .checkIsRepo()
-    .then(isRepo => !isRepo && initialiseRepo(git))
-    .then(() => git.fetch());
-
-  const initialiseRepo = (git) => {
-    return git.init()
-      .then(() => git.addRemote('origin', `https://${REPO}`))
-  }
-
-  git.raw(
-    [
-      'config',
-      '--global',
-      'user.email',
-      'sulemanshah432@gmail.com',
-    ], (err, result) => {
-      console.error(err)
-    });
-
-  git.raw(
-    [
-      'config',
-      '--global',
-      'user.name',
-      'Suleman Shah'
-    ], (err, result) => {
-      console.error(err)
-    });
-}
-
-gitInitial()
-
-const PORT = process.env.PORT || 8080; // Step 1
+const PORT = process.env.PORT || 8080;
 
 app.use(express.json());
+app.use(morgan('tiny'));
 app.use("/images", express.static(path.join(__dirname, "/images")));
 
-// Step 2
-mongoose
-  .connect(process.env.MONGO_URL || 'mongodb://localhost/mern_blog', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: true
-  })
-  .then(console.log("Connected to MongoDB"))
-  .catch((err) => console.log(err));
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('../client/build'));
+}
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "images");
-  },
-  filename: (req, file, cb) => {
-    cb(null, req.body.name);
-  },
-});
-
-const upload = multer({ storage: storage });
 app.post("/api/upload", upload.single("file"), (req, res) => {
   console.log("came here")
-  git
-    .add('./')
-    .commit("auto push!")
-    .push([remote, '--all'], () => console.log('done'))
-    .catch((err) => console.error('failed: ', err))
+  gitCommit()
   res.status(200).json("File has been uploaded");
 });
-
-// HTTP request logger
-app.use(morgan('tiny'));
-
-// Step 3
-
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static('../client/build'));
-}
 
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/categories", categoryRoute);
+
+gitInitial()
 
 app.listen(PORT, () => {
   console.log(`Server is starting at ${PORT}`);
