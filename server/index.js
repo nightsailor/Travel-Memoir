@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
+dotenv.config();
 const mongoose = require("mongoose");
 const morgan = require('morgan');
 const authRoute = require("./routes/auth");
@@ -9,15 +10,48 @@ const postRoute = require("./routes/posts");
 const categoryRoute = require("./routes/categories");
 const multer = require("multer");
 const path = require("path");
-dotenv.config();
 const simpleGit = require('simple-git');
-const git = simpleGit();
+const git = simpleGit(__dirname/ + './../' );
 
 const USER = 'nightsailor';
 const PASS = process.env.PASS;
 const REPO = 'github.com/nightsailor/Apprature';
 
 const remote = `https://${USER}:${PASS}@${REPO}`;
+
+const gitInitial = (git) => {
+  git
+    .checkIsRepo()
+    .then(isRepo => !isRepo && initialiseRepo(git))
+    .then(() => git.fetch());
+
+  const initialiseRepo = (git) => {
+    return git.init()
+      .then(() => git.addRemote('origin', `https://${REPO}`))
+  }
+
+  git.raw(
+    [
+      'config',
+      '--global',
+      'user.email',
+      'sulemanshah432@gmail.com',
+    ], (err, result) => {
+      console.error(err)
+    });
+
+  git.raw(
+    [
+      'config',
+      '--global',
+      'user.name',
+      'Suleman Shah'
+    ], (err, result) => {
+      console.error(err)
+    });
+}
+
+gitInitial()
 
 const PORT = process.env.PORT || 8080; // Step 1
 
@@ -48,10 +82,10 @@ const upload = multer({ storage: storage });
 app.post("/api/upload", upload.single("file"), (req, res) => {
   console.log("came here")
   git
-    .add('./images')
+    .add('./')
     .commit("auto push!")
     .push([remote, '--all'], () => console.log('done'))
-    .catch((err)=> console.error('failed: ', err))
+    .catch((err) => console.error('failed: ', err))
   res.status(200).json("File has been uploaded");
 });
 

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "some": "git config --global user.email \"sulemanshah432@gmail.com\" && git config --global user.name \"Your Name\" ",
     "heroku-postbuild": "cd server && npm run heroku-postbuild && npm install",
     "start": "cd server && npm run start"
   }
