@@ -3,8 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "some": "git config --global user.email \"sulemanshah432@gmail.com\" && git config --global user.name \"Your Name\" ",
-    "heroku-postbuild": "cd server && npm run heroku-postbuild && npm install",
-    "start": "cd server && npm run start"
+    "build": "cd client && npm run build",
+    "install-client": "cd client && npm install --no-audit",
+    "install-server": "cd server && npm install",
+    "setup-install": "npm run install-client && npm run build && npm run install-server",
+    "start": "npm run setup-install && cd server && npm run start",
+    "quick": "npm run build && cd server && npm run start"
+  },
+  "dependencies": {
+    "axios": "^0.23.0",
+    "bcrypt": "^5.0.1",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.12",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.3",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router": "^5.2.1",
+    "react-router-dom": "^5.3.0",
+    "simple-git": "^2.47.0"
   }
 }

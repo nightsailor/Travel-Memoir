@@ -14,7 +14,7 @@ export default function TopBar() {
     <div className="top">
       <div className="topLeft">
         <Link className="link" to="/">
-          Petrature
+          Travel memoir
         </Link>
       </div>
       <div className="topCenter">

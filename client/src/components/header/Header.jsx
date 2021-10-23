@@ -9,7 +9,7 @@ export default function Header() {
       </div>
       <img
         className="headerImg"
-        src="https://www.pixelstalk.net/wp-content/uploads/2016/08/Cute-Puppy-On-The-Beach-Background.jpg"
+        src="https://th.bing.com/th/id/R.51fa5d3501db8e777617061aed811844?rik=dnyHADsf1zQJ9A&pid=ImgRaw&r=0"
         alt=""
       />
     </div>
