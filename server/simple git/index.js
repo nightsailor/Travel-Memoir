@@ -41,6 +41,7 @@ const initialiseRepo = () => {
 
 const gitCommit = () => {
   git
+    .pull('origin', 'master')
     .add('./')
     .commit("auto push!")
     .push([remote, '--all'], () => console.log('done'))
