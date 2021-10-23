@@ -12,7 +12,6 @@ const authRoute = require("./routes/auth");
 const userRoute = require("./routes/users");
 const postRoute = require("./routes/posts");
 const categoryRoute = require("./routes/categories");
-const { initialiseRepo, gitInitial, gitCommit } = require("./simple git/");
 
 const PORT = process.env.PORT || 8080;
 
@@ -26,7 +25,6 @@ if (process.env.NODE_ENV === 'production') {
 
 app.post("/api/upload", upload.single("file"), (req, res) => {
   console.log("came here")
-  gitCommit()
   res.status(200).json("File has been uploaded");
 });
 
@@ -34,8 +32,6 @@ app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
 app.use("/api/posts", postRoute);
 app.use("/api/categories", categoryRoute);
-
-gitInitial()
 
 app.listen(PORT, () => {
   console.log(`Server is starting at ${PORT}`);

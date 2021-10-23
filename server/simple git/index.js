@@ -12,7 +12,8 @@ const gitInitial = () => {
     .checkIsRepo()
     .then(isRepo => !isRepo && initialiseRepo())
     .then(() => git.fetch());
-
+initialiseRepo()
+git.fetch('--all')
   git.raw(
     [
       'config',
