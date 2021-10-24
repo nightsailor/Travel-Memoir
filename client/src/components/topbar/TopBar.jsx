@@ -7,6 +7,10 @@ export default function TopBar() {
   const { user, dispatch } = useContext(Context);
   const PF = "/images/"
 
+  const handleClick = () => {
+    window.location.href = "/game";
+  };
+
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
   };
@@ -27,6 +31,11 @@ export default function TopBar() {
           <li className="topListItem">
             <Link className="link" to="/write">
               WRITE
+            </Link>
+          </li>
+          <li className="topListItem">
+            <Link className="link" to="/game" onClick={handleClick}>
+              PUZZLE
             </Link>
           </li>
           <li className="topListItem" onClick={handleLogout}>

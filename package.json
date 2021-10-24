@@ -7,8 +7,10 @@
     "install-client": "cd client && npm install --no-audit",
     "install-server": "cd server && npm install",
     "setup-install": "npm run install-client && npm run build && npm run install-server",
-    "start": "npm run setup-install && cd server && npm run start",
-    "quick": "npm run build && cd server && npm run start"
+    "copy-game": "cp -r game/ client/build/",
+    "start-server": "cd server && npm run start",
+    "start": "npm run setup-install && npm run copy-game && npm run start-server",
+    "quick": "npm run build && npm run copy-game && npm run start-server"
   },
   "dependencies": {
     "axios": "^0.23.0",
