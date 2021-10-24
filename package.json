@@ -9,7 +9,8 @@
     "setup-install": "npm run install-client && npm run build && npm run install-server",
     "copy-game": "cp -r game/ client/build/",
     "start-server": "cd server && npm run start",
-    "start": "npm run setup-install && npm run copy-game && npm run start-server",
+    "heroku-postbuild": "npm run setup-install && npm run copy-game",
+    "start": "npm run start-server",
     "quick": "npm run build && npm run copy-game && npm run start-server"
   },
   "dependencies": {
